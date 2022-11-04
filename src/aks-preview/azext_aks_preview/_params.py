@@ -23,8 +23,6 @@ from azext_aks_preview._consts import (
     CONST_CREDENTIAL_FORMAT_AZURE,
     CONST_CREDENTIAL_FORMAT_EXEC,
     CONST_DAILY_MAINTENANCE_SCHEDULE,
-    CONST_DISK_DRIVER_V1,
-    CONST_DISK_DRIVER_V2,
     CONST_GPU_INSTANCE_PROFILE_MIG1_G,
     CONST_GPU_INSTANCE_PROFILE_MIG2_G,
     CONST_GPU_INSTANCE_PROFILE_MIG3_G,
@@ -183,7 +181,6 @@ sku_tiers = [CONST_MANAGED_CLUSTER_SKU_TIER_FREE, CONST_MANAGED_CLUSTER_SKU_TIER
 network_plugins = [CONST_NETWORK_PLUGIN_KUBENET, CONST_NETWORK_PLUGIN_AZURE, CONST_NETWORK_PLUGIN_NONE]
 network_plugin_modes = [CONST_NETWORK_PLUGIN_MODE_OVERLAY]
 network_dataplanes = [CONST_NETWORK_DATAPLANE_AZURE, CONST_NETWORK_DATAPLANE_CILIUM]
-disk_driver_versions = [CONST_DISK_DRIVER_V1, CONST_DISK_DRIVER_V2]
 outbound_types = [
     CONST_OUTBOUND_TYPE_LOAD_BALANCER,
     CONST_OUTBOUND_TYPE_USER_DEFINED_ROUTING,
@@ -322,7 +319,7 @@ def load_arguments(self, _):
         c.argument('node_resource_group')
         c.argument('enable_defender', action='store_true')
         c.argument('defender_config', validator=validate_defender_config_parameter)
-        c.argument('disk_driver_version', arg_type=get_enum_type(disk_driver_versions))
+        c.argument('enable_mount_replicas', action='store_true')
         c.argument('disable_disk_driver', action='store_true')
         c.argument('disable_file_driver', action='store_true')
         c.argument('enable_blob_driver', action='store_true')
@@ -472,7 +469,8 @@ def load_arguments(self, _):
         c.argument('enable_defender', action='store_true')
         c.argument('defender_config', validator=validate_defender_config_parameter)
         c.argument('enable_disk_driver', action='store_true')
-        c.argument('disk_driver_version', arg_type=get_enum_type(disk_driver_versions))
+        c.argument('enable_mount_replicas', action='store_true')
+        c.argument('disable_mount_replicas', action='store_true')
         c.argument('disable_disk_driver', action='store_true')
         c.argument('enable_file_driver', action='store_true')
         c.argument('disable_file_driver', action='store_true')

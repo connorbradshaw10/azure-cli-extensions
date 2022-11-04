@@ -13,6 +13,10 @@ Pending
 +++++++
 * Vendor new SDK and bump API version to 2023-04-02-preview.
 
+0.5.140
++++++++
+* Add support to pass csi `enable-disk-driver-mount-replicas` for `az aks create` and `az aks update`.
+
 0.5.139
 * `az aks create` and `az aks nodepool add`: Add warning message when specifying `--os-sku` to `Mariner` or `CBLMariner`.
 

@@ -1248,9 +1248,10 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         """
         enable_disk_driver = self.raw_param.get("enable_disk_driver")
         disable_disk_driver = self.raw_param.get("disable_disk_driver")
-        disk_driver_version = self.raw_param.get("disk_driver_version")
+        enable_mount_replicas = self.raw_param.get("enable_mount_replicas")
+        disable_mount_replicas = self.raw_param.get("disable_mount_replicas")
 
-        if not enable_disk_driver and not disable_disk_driver and not disk_driver_version:
+        if not enable_disk_driver and not disable_disk_driver and not enable_mount_replicas:
             return None
         profile = self.models.ManagedClusterStorageProfileDiskCSIDriver()
 
@@ -1260,29 +1261,39 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                 "--disable-disk-driver at the same time."
             )
 
-        if disable_disk_driver and disk_driver_version:
-            raise ArgumentUsageError(
-                "The parameter --disable-disk-driver cannot be used "
-                "when --disk-driver-version is specified.")
+        if enable_mount_replicas and disable_mount_replicas:
+            raise MutuallyExclusiveArgumentError(
+                "Cannot specify --enable-disk-driver-mount-replicas and "
+                "--disable-disk-driver-mount-replicas at the same time."
+            )
 
-        if self.decorator_mode == DecoratorMode.UPDATE and disk_driver_version and not enable_disk_driver:
+        if disable_disk_driver and enable_mount_replicas:
+            raise ArgumentUsageError(
+                "The parameter --enable-disk-driver-mount-replicas cannot be used "
+                "when --disable-disk-driver is specified.")
+
+        if self.decorator_mode == DecoratorMode.UPDATE and enable_mount_replicas and not enable_disk_driver:
             raise ArgumentUsageError(
                 "Parameter --enable-disk-driver is required "
-                "when --disk-driver-version is specified during update.")
+                "when --enable-disk-driver-mount-replicas is specified during update.")
 
         if self.decorator_mode == DecoratorMode.CREATE:
             if disable_disk_driver:
                 profile.enabled = False
             else:
                 profile.enabled = True
-                if disk_driver_version:
-                    profile.version = disk_driver_version
+                if enable_mount_replicas:
+                    profile.enableMountReplicas = True
+                else:
+                    profile.enableMountReplicas = False
 
         if self.decorator_mode == DecoratorMode.UPDATE:
             if enable_disk_driver:
                 profile.enabled = True
-                if disk_driver_version:
-                    profile.version = disk_driver_version
+                if enable_mount_replicas:
+                    profile.enableMountReplicas = True
+                if disable_mount_replicas:
+                    profile.enableMountReplicas = False
             elif disable_disk_driver:
                 msg = (
                     "Please make sure there are no existing PVs and PVCs "

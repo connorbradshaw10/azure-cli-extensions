@@ -114,10 +114,6 @@ CONST_NETWORK_PLUGIN_MODE_OVERLAY = "overlay"
 CONST_NETWORK_DATAPLANE_AZURE = "azure"
 CONST_NETWORK_DATAPLANE_CILIUM = "cilium"
 
-# disk driver versions
-CONST_DISK_DRIVER_V1 = "v1"
-CONST_DISK_DRIVER_V2 = "v2"
-
 # consts for addons
 # http application routing
 CONST_HTTP_APPLICATION_ROUTING_ADDON_NAME = "httpApplicationRouting"

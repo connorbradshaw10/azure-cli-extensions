@@ -403,9 +403,12 @@ helps['aks create'] = """
         - name: --disable-disk-driver
           type: bool
           short-summary: Disable AzureDisk CSI Driver.
+        - name: --enable-mount-replicas
+          type: bool
+          short-summary: Enable the mount replica feature for faster pod failover.
         - name: --disk-driver-version
           type: string
-          short-summary: Specify AzureDisk CSI Driver version.
+          short-summary: --disk-driver-version is deprecated. Use --enable-mount-replicas for v2 version.
         - name: --disable-file-driver
           type: bool
           short-summary: Disable AzureFile CSI Driver.
@@ -818,9 +821,15 @@ helps['aks update'] = """
           long-summary: |
               Used to control the mode the network plugin should operate in. For example, "overlay" used with
               --network-plugin=azure will use an overlay network (non-VNET IPs) for pods in the cluster.
+        - name: --enable-mount-replicas
+          type: bool
+          short-summary: Enable the mount replica feature for faster pod failover.
+        - name: --disable-mount-replicas
+          type: bool
+          short-summary: Disable the mount replica feature for faster pod failover.
         - name: --disk-driver-version
           type: string
-          short-summary: Specify AzureDisk CSI Driver version.
+          short-summary: --disk-driver-version is deprecated. Use --enable-mount-replicas for v2 version.
         - name: --disable-disk-driver
           type: bool
           short-summary: Disable AzureDisk CSI Driver.
